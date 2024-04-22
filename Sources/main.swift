@@ -148,7 +148,7 @@ func getPlist(withName name: String) -> [String: Any]? {
 
 /// plist output generator
 /// - Parameter arg1: command line parameter
-func plistOutputGeneric(_ arg1: String = "") {
+func plistOutput(_ arg1: String = "") {
   enum Indent {
     case addSpace
     case reduceSpace
@@ -219,9 +219,9 @@ print("### complete path: \(firstArgument)")
 print("### command: \(path.lastPathComponent)\n")
 
 if CommandLine.argc < 2 {
-  plistOutputGeneric()
+  plistOutput()
 } else {
   let arguments = CommandLine.arguments
   print("### argument: \(arguments[1])")
-  plistOutputGeneric(arguments[1])
+  plistOutput(arguments[1])
 }
