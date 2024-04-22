@@ -123,11 +123,16 @@ func collectionType<CollectionType>(
 /// - Returns: plist ad generic dictionary
 func getPlist(withName name: String) -> [String: Any]? {
   var path: String?
-  if let bundlePath = Bundle.module.path(forResource: name, ofType: "plist") {
-    path = bundlePath
-  } else {
-    path = scriptSourceDefaultPath + "\(name)" + ".plist"
-  }
+  let fileType = ".plist"
+
+  #if SWIFT_PACKAGE
+    if let bundlePath: String = Bundle.module.path(forResource: name, ofType: fileType) {
+      path = bundlePath
+    }
+  #else
+    path = scriptSourceDefaultPath + "\(name)" + fileType
+  #endif
+
   if let plistData = FileManager.default.contents(atPath: path ?? "") {
     do {
       // Deserialize the property list
@@ -160,7 +165,8 @@ func plistOutputGeneric(_ arg1: String = "") {
 
   func printPrimitive(data: [String: Any]) {
     for item in data {
-      let resultDictionary = collectionType(of: item, collectionType: [String: Any](), genericElementValue: item.value)
+      let resultDictionary = collectionType(
+        of: item, collectionType: [String: Any](), genericElementValue: item.value)
       let resultType = resultDictionary["type"].self!
       let typeName = String(describing: resultType)
       switch typeName {
