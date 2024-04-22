@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ProjectName</key>
+	<string>plistReader.xcodeproj</string>
+	<key>Scheme</key>
+	<string>plistBundle</string>
+	<key>ProjectBundleName</key>
+	<string>com.ci.plistreader</string>
+	<key>SingleBooleanValue1</key>
+	<true/>
+    <key>SingleBooleanValue2</key>
+    <false/>
+	<key>StringArraySources</key>
+	<array>
+		<string>1st string</string>
+		<string>2nd string</string>
+		<string>3rd string</string>
+	</array>
+	<key>IntegerArraySources</key>
+	<array>
+		<integer>11</integer>
+		<integer>12</integer>
+		<integer>13</integer>
+	</array>
+	<key>DoubleArraySources</key>
+	<array>
+		<real>11.11</real>
+		<real>12.12</real>
+		<real>13.13</real>
+	</array>
+    <key>BoolArraySources</key>
+    <array>
+        <true/>
+        <false/>
+        <true/>
+    </array>
+    <key>DictionarySources</key>
+    <dict>
+        <key>Dictionary inside a Dictionary</key>
+        <dict>
+            <key>d1</key>
+            <string>string value from d1</string>
+            <key>di1</key>
+            <integer>1</integer>
+            <key>InsideIntegerArraySources</key>
+            <array>
+                <integer>11</integer>
+                <integer>22</integer>
+                <integer>33</integer>
+            </array>
+            <key>InsideStringArraySources</key>
+            <array>
+                <string>item1</string>
+                <string>item2</string>
+                <string>item3</string>
+            </array>
+            <key>BoolArraySources</key>
+            <array>
+                <true/>
+                <false/>
+                <true/>
+            </array>
+        </dict>
+    </dict>
+</dict>
+</plist>
