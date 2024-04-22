@@ -5,7 +5,7 @@ Property List files, are a type of configuration file that are very commonly use
 They are usually saved either in XML format or as binary files. I.e. audio, video or image files are wrapped as data types.
 
 Related [DTD link](http://www.apple.com/DTDs/PropertyList-1.0.dtd) to get the complete language definition to possible Apple´s .pist content format description.
-![alt text](diagram-4.png)
+![alt text](plist-diagram-green.png)
 Using `.plist` files in Swift is a common practice for managing configuration data in iOS and macOS applications.
 
 Here's a commonly used approach how to read and parse `.plist` files in Swift:
