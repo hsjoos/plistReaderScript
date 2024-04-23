@@ -14,10 +14,10 @@ var indentSpace = ""
 let indentValue = "    "
 let scriptSourceDefaultPath = "./"
 
-let printflag_swiftType             = PrintFlag.on
-let printflag_objectClassType       = PrintFlag.on
-let printflag_ObjectClassTypeName   = PrintFlag.on
-let printflag_separator             = PrintFlag.on
+let printflag_swiftType             = PrintFlag.off
+let printflag_objectClassType       = PrintFlag.off
+let printflag_ObjectClassTypeName   = PrintFlag.off
+let printflag_separator             = PrintFlag.off
 
 enum PrintFlag {
   case on
