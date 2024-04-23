@@ -1,31 +1,67 @@
-# Property Lists in Swift on macOS and iOS
-![alt text](Title-Image.png)
+# Mastering property lists in Swift on macOS and iOS
+![alt text](Images/Title-Image.png)
 ## What are property lists and what are they used for in the Apple eco system ?
-Property List files, are a type of configuration file that are very commonly used in macOS and iOS applications. They store, for example, user settings, application configurations and system information in a key–value structured format. `.plist` files contain various data types such as _dictionaries, arrays, strings, Boolean_ values and _numbers_. In addition they can also can contain `date` and `data` values to wrap nearly all important data types. 
-They are usually saved either in XML format or as binary files. I.e. audio, video or image files are wrapped as data types.
+Property list files are a type of configuration file that is very commonly used in macOS and iOS applications. They store, for example, user settings, application configurations and system information in a key–value structured format. `.plist` files contain various data types such as _dictionaries, arrays, strings, Boolean_ values and _numbers_. In addition they also can contain `date` and `data` values to wrap nearly all important data types. 
+They are usually saved either in XML format or as binary files. This means that audio, video or image files are wrapped as data types.
 
-Related [DTD link](http://www.apple.com/DTDs/PropertyList-1.0.dtd) to get the complete language definition to possible Apple´s .pist content format description.
-![alt text](plist-diagram-green.png)
+Related [DTD link](http://www.apple.com/DTDs/PropertyList-1.0.dtd) to get the complete language definition to Apple´s .pist content format description.
+![alt text](Images/plist-diagram-green.png)
 Using `.plist` files in Swift is a common practice for managing configuration data in iOS and macOS applications.
 
 Here's a commonly used approach how to read and parse `.plist` files in Swift:
 
-1. Reading and evaluating .plist files in swift, you first need to determine its path. If the file is part of your project, you can use `Bundle.main.path(forResource:ofType:)` to get the path to the file. If you use the plistReader script on commandline, the `.plist` file has to be located in the same folder as the script.
+1. Reading and evaluating .plist files in swift, you first need to determine its path. If the file is part of your project and was packed with the Swift Package Manager (SPM), you can use `Bundle.module.path(forResource:ofType:)` to get the path to the file. If you use the plistReader script on commandline, the `.plist` file has to be located in the same folder as the script. Our code takes this into account with the help of the compiler directive `#if SWIFT_PACKAGE`.
 2. Reading the data once you have the path to the file, you can read its contets into a data object. This is done by using `FileManager.default.contents(atPath:)`.
-3. Serializing the data to convert the binary or XML data into Swift structures, use `PropertyListSerialization.propertyList(from:options:format:)`. This method attempts to deserialize the raw data into a Swift-compatible format (usually a _dictionary_ or _array_).
+3. Serializing the data to convert the XML data into Swift structures, use `PropertyListSerialization.propertyList(from:options:format:)`. This method attempts to deserialize the raw data into a Swift-compatible format (usually a _dictionary_ or _array_).
 4. Evaluating the data after serialization, you can access the converted data and use it according to your application logic. Since `.plist` files mosly contain dictionary structures, access is typically done through key-value pairs.
-## Predecisions and preliminary considerations
+## Special aspects for processing with macOS and iOS
 ### Deserialization with `PropertyListSerialization` creates `NSObject` class items
-This has advantages and disadvantages. As one major disadvantage the deserialization of a boolean property, with the swift values of `true` or `false` is mapped to `1` or `2`, which can't be distinguished from the integer values `1` and `2`. That's one reason, why our `plistReaderScript` is using the NSObject class types to get the correct type values from the `.plist` file deserialization.
+As one problem the deserialization of a boolean property, with the swift values of `true` or `false` is mapped to `1` or `2`, which can't be distinguished from the integer values `1` and `2`. For that reason, our `plistReaderScript` is using the NSObject class types to get the correct type values from the `.plist` file deserialization.
 
-## The project contains
+## The important files for your program evaluation
 - `main.swift` executable command line script
 - `collections.plist` example property list containing additionaly nested collections, like arrays and dictionaries
 - `primitives.plist` simple example array of terminal primitive values, like integer, floating point numbers, strings and booleans.
-## Property list reader script
-The example project swift script shows in detail which special features must be taken into account in the interaction of the used Swift classes and the underlying Foundation and Core Foundation objects.
 
-## How it works
+To run the script, you only need `main.swift` and the `.plist` file to be analyzed. In addition to the two example property list files, you can of course use any `.plist` file of your own.
+# The `plistReader` project in Visual Studio Code
+This swift script project shows in detail which special features must be taken into account for the interaction of the used Swift classes and the underlying Foundation and Core Foundation objects.
+
+The core component is the `plistReader` script, which I integrate into _**Visual Studio Cod**e_ IDE as project for convenient playing around, customization or further development. This also provides a debugging environment for all of you, who are interested and don't have Apples _Xcode_ IDE available.
+
+## Required Swift extensions
+I recomend two swift extensions for your eficient work with Swift in VS Code. They are important for: Code completion, documentation references, formatters, syntax highlighting, Swift Package Manager, debugging and more.
+
+![alt text](Images/swift-extnsions.png)
+
+## The _VS Code_ project structure
+|||
+|:---:|:---:|
+|Project name|Launch description|
+|![a](Images/project_mark.png)|![b](Images/launch_mark.png)|
+|Resources Folder|Swift Package description|
+|![c](Images/Resource_mark.png)|![d](Images/Package_mark.png)|
+|||
+
+## Compile and generate the project bundle folder
+If the _VS Studio_ project is organized like that, you can execute `swift build`in the terminal of the _VS Studio_ command line to generate the `.build` folder, that contains the complete bundled code with all required resources, to provide great debug features.
+
+![swift build](Images/swift-build.png)
+
+## Start a debug session in VS Code
+![debug session](Images/debug-run.png)
+## Example print results of the included `collections.plist`
+### Chatty output
+.. with additional information about the item types. In particular, the object type ids and object class names of the required NSObject and Core Foundation classes
+![print results](Images/example-analysis-output.png)
+### Reduced output
+.. only with the _key-value-pairs_ of each item.
+
+Please note that we have the same property list file in both cases. The items are only arranged in a different order, as the order of the values is not predefined for property lists.
+
+![alt text](Images/example-analysis-small.png)
+# How it works
+## Let's dive into the code
 ### 1. Import required framework
 ```swift
 import Foundation
@@ -94,7 +130,7 @@ func getCollectionType<T>(item: Any, valueWithType: T) -> T {
         printWithIndent("Object class TypeID: \(typeID)", toggle: printflag_objectClassType)
         plistElementType = Data.self
     case CFDateGetTypeID():
-        printWithIndent("### Data", toggle: printflag_swiftType)
+        printWithIndent("### Date", toggle: printflag_swiftType)
         printWithIndent("Object class TypeID: \(typeID)", toggle: printflag_objectClassType)
         plistElementType = Date.self
     case CFStringGetTypeID():
@@ -170,11 +206,16 @@ The caller always knows whether it expects an array or a dictionary, and therefo
 /// - Returns: plist ad generic dictionary
 func getPlist(withName name: String) -> [String: Any]? {
   var path: String?
-  if let bundlePath = Bundle.module.path(forResource: name, ofType: "plist") {
-    path = bundlePath
-  } else {
-    path = scriptSourceDefaultPath + "\(name)" + ".plist"
-  }
+  let fileType = ".plist"
+
+  #if SWIFT_PACKAGE
+    if let bundlePath: String = Bundle.module.path(forResource: name, ofType: fileType) {
+      path = bundlePath
+    }
+  #else
+    path = scriptSourceDefaultPath + "\(name)" + fileType
+  #endif
+
   if let plistData = FileManager.default.contents(atPath: path ?? "") {
     do {
       // Deserialize the property list
@@ -188,3 +229,65 @@ func getPlist(withName name: String) -> [String: Any]? {
   return nil
 }
 ```
+### The program is build for two different usage scenarios.
+#### 1. Call on command line with Swift source code interpreter
+##### `swift main.swift <plist-file>`
+```
+.
+├── collections.plist
+├── main.swift
+└── primitives.plist
+
+1 directory, 3 files
+```
+First you can run it as a simple command line script, where you only need a Swift interpreter installed on our computer. In this case you only need the Swift source code file `main.swift` and one example `.plist` file like our included `collections.plist`, the simpler `primitives.plist` or your own important example file.
+#### 2. Run from VS Code
+##### `F5` for debug or `^F5` run without debug
+**Attention !**
+
+Please be aware, that allways after some changes in the code or any othe modification in the project, you have to run `swift build` in the VS Code project terminal.
+Therefore see my screenshot and description above for VS Code debug session execution and `swift build`
+
+**before first `swift build`**
+```bash
+.
+├── .vscode
+│   └── launch.json
+├── Package.swift
+├── Readme.md
+└── Sources
+    ├── Resources
+    │   ├── collections.plist
+    │   └── primitives.plist
+    └── main.swift
+
+4 directories, 6 files
+```
+**after executing `swift build`**
+
+```bash
+.
+├── .build
+│   ├── arm64-apple-macosx
+│   │   ├── build.db
+│   │   └── debug
+│   ├── artifacts
+│   ├── checkouts
+│   ├── debug -> arm64-apple-macosx/debug
+│   ├── debug.yaml
+│   ├── repositories
+│   └── workspace-state.json
+├── .vscode
+│   └── launch.json
+├── Package.swift
+├── Readme.md
+└── Sources
+    ├── Resources
+    │   ├── collections.plist
+    │   └── primitives.plist
+    └── main.swift
+
+11 directories, 9 files
+```
+
+

@@ -14,10 +14,10 @@ var indentSpace = ""
 let indentValue = "    "
 let scriptSourceDefaultPath = "./"
 
-let printflag_swiftType = PrintFlag.on
-let printflag_objectClassType = PrintFlag.on
-let printflag_ObjectClassTypeName = PrintFlag.on
-let printflag_separator = PrintFlag.on
+let printflag_swiftType             = PrintFlag.on
+let printflag_objectClassType       = PrintFlag.on
+let printflag_ObjectClassTypeName   = PrintFlag.on
+let printflag_separator             = PrintFlag.on
 
 enum PrintFlag {
   case on
@@ -68,7 +68,7 @@ func getCollectionType<T>(item: Any, valueWithType: T) -> T {
     printWithIndent("Object class TypeID: \(typeID)", toggle: printflag_objectClassType)
     plistElementType = Data.self
   case CFDateGetTypeID():
-    printWithIndent("### Data", toggle: printflag_swiftType)
+    printWithIndent("### Date", toggle: printflag_swiftType)
     printWithIndent("Object class TypeID: \(typeID)", toggle: printflag_objectClassType)
     plistElementType = Date.self
   case CFStringGetTypeID():
@@ -123,14 +123,19 @@ func collectionType<CollectionType>(
 /// - Returns: plist ad generic dictionary
 func getPlist(withName name: String) -> [String: Any]? {
   var path: String?
+  var fileName = name
   let fileType = ".plist"
 
+  if name.hasSuffix(fileType) {
+    fileName = name.split(separator: ".").dropLast().joined(separator: ".")
+  }
+
   #if SWIFT_PACKAGE
-    if let bundlePath: String = Bundle.module.path(forResource: name, ofType: fileType) {
+    if let bundlePath: String = Bundle.module.path(forResource: fileName, ofType: fileType) {
       path = bundlePath
     }
   #else
-    path = scriptSourceDefaultPath + "\(name)" + fileType
+    path = scriptSourceDefaultPath + "\(fileName)" + fileType
   #endif
 
   if let plistData = FileManager.default.contents(atPath: path ?? "") {
@@ -148,7 +153,7 @@ func getPlist(withName name: String) -> [String: Any]? {
 
 /// plist output generator
 /// - Parameter arg1: command line parameter
-func plistOutputGeneric(_ arg1: String = "") {
+func plistOutput(_ arg1: String = "") {
   enum Indent {
     case addSpace
     case reduceSpace
@@ -219,9 +224,9 @@ print("### complete path: \(firstArgument)")
 print("### command: \(path.lastPathComponent)\n")
 
 if CommandLine.argc < 2 {
-  plistOutputGeneric()
+  plistOutput()
 } else {
   let arguments = CommandLine.arguments
   print("### argument: \(arguments[1])")
-  plistOutputGeneric(arguments[1])
+  plistOutput(arguments[1])
 }
