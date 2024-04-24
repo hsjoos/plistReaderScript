@@ -14,10 +14,10 @@ var indentSpace = ""
 let indentValue = "    "
 let scriptSourceDefaultPath = "./"
 
-let printflag_swiftType             = PrintFlag.off
-let printflag_objectClassType       = PrintFlag.off
-let printflag_ObjectClassTypeName   = PrintFlag.off
-let printflag_separator             = PrintFlag.off
+let printflag_swiftType             = PrintFlag.on
+let printflag_objectClassType       = PrintFlag.on
+let printflag_ObjectClassTypeName   = PrintFlag.on
+let printflag_separator             = PrintFlag.on
 
 enum PrintFlag {
   case on
@@ -168,7 +168,7 @@ func plistOutput(_ arg1: String = "") {
     }
   }
 
-  func printPrimitive(data: [String: Any]) {
+  func printItem(data: [String: Any]) {
     for item in data {
       let resultDictionary = collectionType(
         of: item, collectionType: [String: Any](), genericElementValue: item.value)
@@ -181,7 +181,7 @@ func plistOutput(_ arg1: String = "") {
       case "Dictionary<String, Any>":
         printWithIndent("key: \(resultDictionary["key"]!), type: \(typeName)")
         adaptIndentation(.addSpace)
-        printPrimitive(data: item.value as! [String: Any])
+       printItem(data: item.value as! [String: Any])
         adaptIndentation(.reduceSpace)
       case "Array<Any>":
         printWithIndent("key: \(resultDictionary["key"]!), type: \(typeName)")
@@ -210,7 +210,7 @@ func plistOutput(_ arg1: String = "") {
     plistName = arg1
   }
   if let data = getPlist(withName: plistName) {
-    printPrimitive(data: data)
+   printItem(data: data)
   } else {
     print("no \(plistName).plist file found")
   }
