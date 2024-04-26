@@ -14,10 +14,10 @@ var indentSpace = ""
 let indentValue = "    "
 let scriptSourceDefaultPath = "./"
 
-let printflag_swiftType             = PrintFlag.on
-let printflag_objectClassType       = PrintFlag.on
-let printflag_ObjectClassTypeName   = PrintFlag.on
-let printflag_separator             = PrintFlag.on
+let printflag_swiftType           = PrintFlag.on
+let printflag_objectClassType     = PrintFlag.on
+let printflag_ObjectClassTypeName = PrintFlag.on
+let printflag_separator           = PrintFlag.on
 
 enum PrintFlag {
   case on
@@ -45,47 +45,45 @@ func printWithIndent(_ info: String, toggle: PrintFlag = .on) {
 /// - Parameter item: dictionary element
 /// - Returns: Swift type
 func getCollectionType<T>(item: Any, valueWithType: T) -> T {
-
   var plistElementType: Any
   let valueWithObjectType = valueWithType as! NSObject
-
   let typeID = CFGetTypeID(valueWithObjectType)
+
   switch typeID {
   case CFBooleanGetTypeID():
-    printWithIndent("### Bool", toggle: printflag_swiftType)
+    printWithIndent("Swift Bool", toggle: printflag_swiftType)
     printWithIndent("Object class TypeID: \(typeID)", toggle: printflag_swiftType)
     plistElementType = Bool.self
   case CFDictionaryGetTypeID():
-    printWithIndent("### Dictionary", toggle: printflag_swiftType)
+    printWithIndent("Swift Dictionary", toggle: printflag_swiftType)
     printWithIndent("Object class TypeID: \(typeID)", toggle: printflag_objectClassType)
     plistElementType = Dictionary<String, Any>.self
   case CFArrayGetTypeID():
-    printWithIndent("### Array", toggle: printflag_swiftType)
+    printWithIndent("Swift Array", toggle: printflag_swiftType)
     printWithIndent("Object class TypeID: \(typeID)", toggle: printflag_objectClassType)
     plistElementType = Array<Any>.self
   case CFDataGetTypeID():
-    printWithIndent("### Data", toggle: printflag_swiftType)
+    printWithIndent("Swift Data", toggle: printflag_swiftType)
     printWithIndent("Object class TypeID: \(typeID)", toggle: printflag_objectClassType)
     plistElementType = Data.self
   case CFDateGetTypeID():
-    printWithIndent("### Date", toggle: printflag_swiftType)
+    printWithIndent("Swift Date", toggle: printflag_swiftType)
     printWithIndent("Object class TypeID: \(typeID)", toggle: printflag_objectClassType)
     plistElementType = Date.self
   case CFStringGetTypeID():
-    printWithIndent("### String", toggle: printflag_swiftType)
+    printWithIndent("Swift String", toggle: printflag_swiftType)
     printWithIndent("Object class TypeID: \(typeID)", toggle: printflag_objectClassType)
     plistElementType = String.self
   case CFNumberGetTypeID():
-    printWithIndent("Object class TypeID: \(typeID)", toggle: printflag_objectClassType)
     let valueWithNumberObjectType = valueWithType as! NSNumber
-    let numberType = CFNumberGetType(valueWithNumberObjectType).rawValue
     if CFNumberIsFloatType(valueWithNumberObjectType) {
       plistElementType = Double.self
-      printWithIndent("### Number Float: \(numberType)", toggle: printflag_objectClassType)
+      printWithIndent("Swift Double:", toggle: printflag_objectClassType)
     } else {
       plistElementType = Int.self
-      printWithIndent("### Number Integer: \(numberType)", toggle: printflag_objectClassType)
+      printWithIndent("Swift Integer:", toggle: printflag_objectClassType)
     }
+    printWithIndent("Object class TypeID: \(typeID)", toggle: printflag_objectClassType)
   default:
     plistElementType = Any.self
     printWithIndent("Object class TypeID-default: \(typeID)", toggle: printflag_objectClassType)
@@ -151,9 +149,8 @@ func getPlist(withName name: String) -> [String: Any]? {
   return nil
 }
 
-/// plist output generator
-/// - Parameter arg1: command line parameter
-func plistOutput(_ arg1: String = "") {
+func printItem(data: [String: Any]) {
+
   enum Indent {
     case addSpace
     case reduceSpace
@@ -168,65 +165,58 @@ func plistOutput(_ arg1: String = "") {
     }
   }
 
-  func printItem(data: [String: Any]) {
-    for item in data {
-      let resultDictionary = collectionType(
-        of: item, collectionType: [String: Any](), genericElementValue: item.value)
-      let resultType = resultDictionary["type"].self!
-      let typeName = String(describing: resultType)
-      switch typeName {
-      case "Bool", "Int", "String", "Double":
-        printWithIndent("key: \(resultDictionary["key"]!), type: \(typeName)")
-        printWithIndent("value: \(resultDictionary["value"]!), type: \(typeName)")
-      case "Dictionary<String, Any>":
-        printWithIndent("key: \(resultDictionary["key"]!), type: \(typeName)")
-        adaptIndentation(.addSpace)
-       printItem(data: item.value as! [String: Any])
-        adaptIndentation(.reduceSpace)
-      case "Array<Any>":
-        printWithIndent("key: \(resultDictionary["key"]!), type: \(typeName)")
-        adaptIndentation(.addSpace)
-        for arrayElement in item.value as! [Any] {
-          let typeArray = collectionType(
-            of: arrayElement, collectionType: [Any](), genericElementValue: arrayElement.self)
-          var elementValue = arrayElement
-          if case let adaptedBoolElementValue as Bool = arrayElement {
-            elementValue = adaptedBoolElementValue
-          }
-          let elementType = typeArray.first!
-          printWithIndent("value: \(elementValue), type: \(elementType as! String)")
-        }
-        adaptIndentation(.reduceSpace)
-      default:
-        print("Error! type \(typeName) not found")
-      }
-      printWithIndent(
-        "--------------------------------------------------", toggle: printflag_separator)
-    }
-  }
+  for item in data {
+    let resultDictionary = collectionType(
+      of: item, collectionType: [String: Any](), genericElementValue: item.value)
 
-  var plistName = "collections"
-  if !arg1.isEmpty {
-    plistName = arg1
+    guard let resultType = resultDictionary["type"].self else {
+      fatalError("type exception !!!")
+    }
+    guard let resultKey = resultDictionary["key"].self else {
+      fatalError("key exception !!!")
+    }
+    guard let resultValue = resultDictionary["value"].self else {
+      fatalError("value exception !!!")
+    }
+    let typeName = String(describing: resultType)
+    switch typeName {
+    case "Bool", "Int", "String", "Double":
+      printWithIndent("key: \(resultKey), type: \(typeName)")
+      printWithIndent("value: \(resultValue), type: \(typeName)")
+    case "Dictionary<String, Any>":
+      printWithIndent("key: \(resultKey), type: \(typeName)")
+      adaptIndentation(.addSpace)
+      printItem(data: item.value as! [String: Any])
+      adaptIndentation(.reduceSpace)
+    case "Array<Any>":
+      printWithIndent("key: \(resultKey), type: \(typeName)")
+      adaptIndentation(.addSpace)
+      for arrayElement in item.value as! [Any] {
+        let typeArray = collectionType(
+          of: arrayElement, collectionType: [Any](), genericElementValue: arrayElement.self)
+        var elementValue = arrayElement
+        if case let adaptedBoolElementValue as Bool = arrayElement {
+          elementValue = adaptedBoolElementValue
+        }
+        let elementType = typeArray.first!
+        printWithIndent("value: \(elementValue), type: \(elementType as! String)")
+      }
+      adaptIndentation(.reduceSpace)
+    default:
+      print("Error! type \(typeName) not found")
+    }
+    printWithIndent(
+      "--------------------------------------------------", toggle: printflag_separator)
   }
-  if let data = getPlist(withName: plistName) {
-   printItem(data: data)
-  } else {
-    print("no \(plistName).plist file found")
-  }
-  print()
 }
 
-let firstArgument = CommandLine.arguments[0]
-let path = URL(string: firstArgument)!
-
-print("### complete path: \(firstArgument)")
-print("### command: \(path.lastPathComponent)\n")
-
-if CommandLine.argc < 2 {
-  plistOutput()
+// default is collection.plist file
+var plistName = "collections"
+if CommandLine.argc > 1 {
+  plistName = CommandLine.arguments[1]
+}
+if let data: [String: Any] = getPlist(withName: plistName) {
+  printItem(data: data)
 } else {
-  let arguments = CommandLine.arguments
-  print("### argument: \(arguments[1])")
-  plistOutput(arguments[1])
+  print("no \(plistName).plist file found")
 }
