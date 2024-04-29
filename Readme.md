@@ -51,114 +51,205 @@ If the _VS Studio_ project is organized like that, you can execute `swift build`
 ## Start a debug session in VS Code
 ![debug session](Images/debug-run.png)
 ## Example print results of the included `collections.plist`
-### Chatty output
+### Chatty output info
 .. with additional information about the item types. In particular, the object type ids and object class names of the required NSObject and Core Foundation classes
 ```bash
-### String
+---------------------------------------------
 Object class TypeID: 7
-Object class type name: __NSCFString
-key: ProjectName, type: String
-value: plistReader.xcodeproj, type: String
---------------------------------------------------
-### Dictionary
+Object class Name: __NSCFString
+key: Scheme
+value: plistBundle
+type: String
+---------------------------------------------
+Object class TypeID: 7
+Object class Name: __NSCFString
+key: ProjectName
+value: plistReader.xcodeproj
+type: String
+---------------------------------------------
 Object class TypeID: 18
-Object class type name: __NSDictionaryM
-key: DictionarySources, type: Dictionary<String, Any>
-    ### Dictionary
+Object class Name: __NSDictionaryM
+key: DictionarySources
+type: Dictionary<String, Any>
+    -----------------------------------------
     Object class TypeID: 18
-    Object class type name: __NSDictionaryM
-    key: Dictionary inside a Dictionary, type: Dictionary<String, Any>
-        ### Array
-        Object class TypeID: 19
-        Object class type name: __NSArrayM
-        key: InsideStringArraySources, type: Array<Any>
-            ### String
-            Object class TypeID: 7
-            Object class type name: __NSCFString
-            value: item1, type: String
-            ### String
-            Object class TypeID: 7
-            Object class type name: __NSCFString
-            value: item2, type: String
-            ### String
-            Object class TypeID: 7
-            Object class type name: __NSCFString
-            value: item3, type: String
-        --------------------------------------------------
+    Object class Name: __NSDictionaryM
+    key: Dictionary inside a Dictionary
+    type: Dictionary<String, Any>
+        -------------------------------------
         Object class TypeID: 22
-        ### Number Integer: 4
-        Object class type name: __NSCFNumber
-        key: di1, type: Int
-        value: true, type: Int
-        --------------------------------------------------
-        ### Array
+        Object class Name: __NSCFNumber
+        key: di1
+        value: 1
+        type: Int
+        -------------------------------------
+        Object class TypeID: 7
+        Object class Name: __NSCFString
+        key: d1
+        value: string value from d1
+        type: String
+        -------------------------------------
         Object class TypeID: 19
-        Object class type name: __NSArrayM
-        key: BoolArraySources, type: Array<Any>
-            ### Bool
+        Object class Name: __NSArrayM
+        key: BoolArraySources
+        type: Array<Any>
+            ---------------------------------
             Object class TypeID: 21
-            Object class type name: __NSCFBoolean
-            value: true, type: Bool
-            ### Bool
+            Object class Name: __NSCFBoolean
+            value: true
+            type: Bool
+            ---------------------------------
             Object class TypeID: 21
-            Object class type name: __NSCFBoolean
-            value: false, type: Bool
-            ### Bool
+            Object class Name: __NSCFBoolean
+            value: false
+            type: Bool
+            ---------------------------------
             Object class TypeID: 21
-            Object class type name: __NSCFBoolean
-            value: true, type: Bool
-        --------------------------------------------------
-        ...
+            Object class Name: __NSCFBoolean
+            value: true
+            type: Bool
+        -------------------------------------
+        Object class TypeID: 19
+        Object class Name: __NSArrayM
+        key: InsideStringArraySources
+        type: Array<Any>
+            ---------------------------------
+            Object class TypeID: 7
+            Object class Name: __NSCFString
+            value: item1
+            type: String
+            ---------------------------------
+            Object class TypeID: 7
+            Object class Name: __NSCFString
+            value: item2
+            type: String
+            ---------------------------------
+            Object class TypeID: 7
+            Object class Name: __NSCFString
+            value: item3
+            type: String
+        -------------------------------------
+        Object class TypeID: 19
+        Object class Name: __NSArrayM
+        key: InsideIntegerArraySources
+        type: Array<Any>
+            ---------------------------------
+            Object class TypeID: 22
+            Object class Name: __NSCFNumber
+            value: 11
+            type: Int
+            ---------------------------------
+            Object class TypeID: 22
+            Object class Name: __NSCFNumber
+            value: 22
+            type: Int
+            ---------------------------------
+            Object class TypeID: 22
+            Object class Name: __NSCFNumber
+            value: 33
+            type: Int
+---------------------------------------------
+Object class TypeID: 21
+Object class Name: __NSCFBoolean
+key: SingleBooleanValue2
+value: false
+type: Bool        ...
 ```
-### Reduced output
+### Reduced output info
 .. only with the _key-value-pairs_ of each item.
 
 Please note that we have the same property list file in both cases. The items are only arranged in a different order, as the order of the values is not predefined for property lists.
 ```bash
-key: DictionarySources, type: Dictionary<String, Any>
-    key: Dictionary inside a Dictionary, type: Dictionary<String, Any>
-        key: d1, type: String
-        value: string value from d1, type: String
-        key: di1, type: Int
-        value: true, type: Int
-        key: InsideIntegerArraySources, type: Array<Any>
-            value: 11, type: Int
-            value: 22, type: Int
-            value: 33, type: Int
-        key: InsideStringArraySources, type: Array<Any>
-            value: item1, type: String
-            value: item2, type: String
-            value: item3, type: String
-        key: BoolArraySources, type: Array<Any>
-            value: true, type: Bool
-            value: false, type: Bool
-            value: true, type: Bool
-key: IntegerArraySources, type: Array<Any>
-    value: 11, type: Int
-    value: 12, type: Int
-    value: 13, type: Int
-key: SingleBooleanValue2, type: Bool
-value: false, type: Bool
-key: ProjectBundleName, type: String
-value: com.ci.plistreader, type: String
-key: SingleBooleanValue1, type: Bool
-value: true, type: Bool
-key: BoolArraySources, type: Array<Any>
-    value: true, type: Bool
-    value: false, type: Bool
-    value: true, type: Bool
-key: DoubleArraySources, type: Array<Any>
-    value: 11.11, type: Double
-    value: 12.12, type: Double
-    value: 13.13, type: Double
-key: StringArraySources, type: Array<Any>
-    value: 1st string, type: String
-    value: 2nd string, type: String
-    value: 3rd string, type: String
-key: ProjectName, type: String
-value: plistReader.xcodeproj, type: String
-key: Scheme, type: String
-value: plistBundle, type: String
+key: IntegerArraySources
+type: Array<Any>
+    value: 11
+    type: Int
+    value: 12
+    type: Int
+    value: 13
+    type: Int
+key: Date
+value: 2024-04-29 16:11:12 +0000
+type: Date
+key: DictionarySources
+type: Dictionary<String, Any>
+    key: Dictionary inside a Dictionary
+    type: Dictionary<String, Any>
+        key: InsideStringArraySources
+        type: Array<Any>
+            value: item1
+            type: String
+            value: item2
+            type: String
+            value: item3
+            type: String
+        key: InsideIntegerArraySources
+        type: Array<Any>
+            value: 11
+            type: Int
+            value: 22
+            type: Int
+            value: 33
+            type: Int
+        key: BoolArraySources
+        type: Array<Any>
+            value: true
+            type: Bool
+            value: false
+            type: Bool
+            value: true
+            type: Bool
+        key: di1
+        value: 1
+        type: Int
+        key: d1
+        value: string value from d1
+        type: String
+key: BoolArraySources
+type: Array<Any>
+    value: true
+    type: Bool
+    value: false
+    type: Bool
+    value: true
+    type: Bool
+key: ProjectBundleName
+value: com.ci.plistreader
+type: String
+key: ProjectName
+value: plistReader.xcodeproj
+type: String
+key: DoubleArraySources
+type: Array<Any>
+    value: 11.11
+    type: Double
+    value: 12.12
+    type: Double
+    value: 13.13
+    type: Double
+key: SingleBooleanValue1
+value: true
+type: Bool
+key: ArrayArraySources
+type: Array<Any>
+    type: Array<Any>
+        value: s11
+        type: String
+    type: Array<Any>
+        value: s12
+        type: String
+    type: Array<Any>
+        value: s13
+        type: String
+key: Scheme
+value: plistBundle
+type: String
+key: Data
+value: 0 bytes
+type: Data
+key: SingleBooleanValue2
+value: false
+type: Bool
 ```
 # How it works
 ## Let's dive into the code
@@ -171,32 +262,48 @@ We have to import the `Foundation` framework because the `PropertyListSerializat
 
 ```swift
 var indentSpace = ""
-let indentValue = "    "
+let indentCharacter = " "
+let indentString = String(repeating: indentCharacter, count: 4)
+
+let separatorCharacter = "-"
+var separatorString = String(repeating: separatorCharacter, count: 45)
+
 let scriptSourceDefaultPath = "./"
 
-let printflag_swiftType = PrintFlag.on
-let printflag_objectClassType = PrintFlag.on
-let printflag_ObjectClassTypeName = PrintFlag.on
-let printflag_separator = PrintFlag.on
+let printflag_swiftType = PrintFlag.off
+let printflag_objectClassType = PrintFlag.off
+let printflag_ObjectClassTypeName = PrintFlag.off
+let printflag_separator = PrintFlag.off
 
 enum PrintFlag {
-  case on
-  case off
-
-  var isOn: Bool {
-    switch self {
-    case .on:
-      return true
-    case .off:
-      return false
+    case on
+    case off
+    
+    var isOn: Bool {
+        switch self {
+        case .on:
+            return true
+        case .off:
+            return false
+        }
     }
-  }
+}
+
+enum ItemType: String{
+    case array = "Array<Any>"
+    case dictionary = "Dictionary<String, Any>"
+    case string = "String"
+    case boolean = "Bool"
+    case integer = "Int"
+    case double = "Double"
+    case data = "Data"
+    case date = "Date"
 }
 
 func printWithIndent(_ info: String, toggle: PrintFlag = .on) {
-  if toggle.isOn {
-    print("\(indentSpace)\(info)")
-  }
+    if toggle.isOn {
+        print("\(indentSpace)\(info)")
+    }
 }
 ```
 The properties are displayed with _key_, _value_ and _type_ in a clearly arranged output format. In particular, nested arrays and dictionaries are shown with their respective hierarchy levels.
@@ -206,53 +313,35 @@ The properties are displayed with _key_, _value_ and _type_ in a clearly arrange
 /// Collect  item type from NSObject plist element and return respective Swift type
 /// - Parameter item: dictionary element
 /// - Returns: Swift type
-func getCollectionType<T>(item: Any, valueWithType: T) -> T {
-
+func getItemType(itemValue: Any) -> Dictionary<String, Any> {
     var plistElementType: Any
-    let valueWithObjectType = valueWithType as! NSObject
-
+    let valueWithObjectType = itemValue as! NSObject
     let typeID = CFGetTypeID(valueWithObjectType)
+    
     switch typeID {
     case CFBooleanGetTypeID():
-        printWithIndent("### Bool", toggle: printflag_swiftType)
-        printWithIndent("Object class TypeID: \(typeID)", toggle: printflag_swiftType)
         plistElementType = Bool.self
     case CFDictionaryGetTypeID():
-        printWithIndent("### Dictionary", toggle: printflag_swiftType)
-        printWithIndent("Object class TypeID: \(typeID)", toggle: printflag_objectClassType)
         plistElementType = Dictionary<String, Any>.self
     case CFArrayGetTypeID():
-        printWithIndent("### Array", toggle: printflag_swiftType)
-        printWithIndent("Object class TypeID: \(typeID)", toggle: printflag_objectClassType)
         plistElementType = Array<Any>.self
     case CFDataGetTypeID():
-        printWithIndent("### Data", toggle: printflag_swiftType)
-        printWithIndent("Object class TypeID: \(typeID)", toggle: printflag_objectClassType)
         plistElementType = Data.self
     case CFDateGetTypeID():
-        printWithIndent("### Date", toggle: printflag_swiftType)
-        printWithIndent("Object class TypeID: \(typeID)", toggle: printflag_objectClassType)
         plistElementType = Date.self
     case CFStringGetTypeID():
-        printWithIndent("### String", toggle: printflag_swiftType)
-        printWithIndent("Object class TypeID: \(typeID)", toggle: printflag_objectClassType)
         plistElementType = String.self
     case CFNumberGetTypeID():
-        printWithIndent("Object class TypeID: \(typeID)", toggle: printflag_objectClassType)
-        let valueWithNumberObjectType = valueWithType as! NSNumber
-        let numberType = CFNumberGetType(valueWithNumberObjectType).rawValue
+        let valueWithNumberObjectType = itemValue as! NSNumber
         if CFNumberIsFloatType(valueWithNumberObjectType) {
             plistElementType = Double.self
-            printWithIndent("### Number Float: \(numberType)", toggle: printflag_objectClassType)
         } else {
             plistElementType = Int.self
-            printWithIndent("### Number Integer: \(numberType)", toggle: printflag_objectClassType)
         }
     default:
         plistElementType = Any.self
-        printWithIndent("Object class TypeID-default: \(typeID)", toggle: printflag_objectClassType)
     }
-    return plistElementType.self as! T
+    return [ "SwiftType": plistElementType.self, "ObjectType": typeID, "ObjectClassName": String(describing: type(of: itemValue)) ]
 }
 ```
 The method maps the `.plist` elements Core Foundation Types `CFTypeID` to the corresponding Swift type. As already mentioned, this is necessary because the serialized property list that we read in from the `.plist` file is now available to us in the Core Foundation type system. This is particularly important for data types such as Boolean and Numbers, as integer and Boolean values, for example, cannot be uniquely assigned to each other.
@@ -269,68 +358,142 @@ Now we got all types from our serialized input `.plist` file as related Swift ty
 
 `array` | `data` | `date` | `dict` | `real` | `integer` | `string` | `true` | `false`
 
-### 4. Now we create the content information
-```swift
-/// Create Collection Type
-/// - Parameters:
-///   - item: deserialized plist item as Core Foundation dictionary
-///   - collectionType: collection type dictionary object
-///   - genericElementValue: generic element value
-/// - Returns: item key, value and type as dictionary
-func collectionType<CollectionType>(
-  of item: Any, collectionType: CollectionType, genericElementValue: Any
-) -> CollectionType {
-  let typeAsString = String(describing: type(of: genericElementValue))
-  let collectionType = getCollectionType(item: item, valueWithType: genericElementValue)
-  var elementValue = genericElementValue
-  printWithIndent("Object class type name: \(typeAsString)", toggle: printflag_ObjectClassTypeName)
-
-  if case let adaptedBoolElementValue as Bool = genericElementValue {
-    elementValue = adaptedBoolElementValue
-  }
-  if let element = item as? Dictionary<String, Any>.Element {
-    return ["key": element.key, "value": elementValue, "type": collectionType] as! CollectionType
-  }
-  return [String(describing: collectionType)] as! CollectionType
-}
-```
-
 For each `.plist` item we create its content information as ___key___, ___value___ and its ___type___. Provide all in a dictionary or array collection as the functions return value.
 
 The caller always knows whether it requires an array or a dictionary, and therefore an instance of this expected collection type is passed at the call point.
 
-### 5. We read the sample `.plist` file and deserialize the elements into a dictionary
+### 4. We read the sample `.plist` file and deserialize the elements into a dictionary
 ```swift
 /// File manager will fetch plist file from compiled commandline tool as well as from swift script
 /// - Parameter name: plist file name
 /// - Returns: plist ad generic dictionary
 func getPlist(withName name: String) -> [String: Any]? {
-  var path: String?
-  let fileType = ".plist"
-
-  #if SWIFT_PACKAGE
-    if let bundlePath: String = Bundle.module.path(forResource: name, ofType: fileType) {
-      path = bundlePath
+    var path: String?
+    var fileName = name
+    let fileType = ".plist"
+    
+    if name.hasSuffix(fileType) {
+        fileName = name.split(separator: ".").dropLast().joined(separator: ".")
     }
-  #else
-    path = scriptSourceDefaultPath + "\(name)" + fileType
-  #endif
-
-  if let plistData = FileManager.default.contents(atPath: path ?? "") {
-    do {
-      // Deserialize the property list
-      let plistDictionary = try PropertyListSerialization.propertyList(
-        from: plistData, options: .mutableContainersAndLeaves, format: nil)
-      return plistDictionary as? [String: Any]
-    } catch {
-      print("Deserialization error occurred: \(error)")
+    
+#if SWIFT_PACKAGE
+    if let bundlePath: String = Bundle.module.path(forResource: fileName, ofType: fileType) {
+        path = bundlePath
     }
-  }
-  return nil
+#else
+    path = scriptSourceDefaultPath + "\(fileName)" + fileType
+#endif
+    
+    if let plistData = FileManager.default.contents(atPath: path ?? "") {
+        do {
+            // Deserialize the property list
+            let plistDictionary = try PropertyListSerialization.propertyList(
+                from: plistData, options: .mutableContainersAndLeaves, format: nil)
+            return plistDictionary as? [String: Any]
+        } catch {
+            print("Deserialization error occurred: \(error)")
+        }
+    }
+    return nil
 }
 ```
 The file manager function has to take in account that we habe two different usage scenarios. Therefore we have to take in consideration if we run the code from an app bundle or from a plain script source from the command line.
-### The code will be executed for two different source locations
+### 5. Print formatted `.plist` items
+```swift
+/// Get nested elements and display the hierarchical plist structure
+/// - Parameter data:
+func getItemInfo(data: [String: Any], insideCollectionType: ItemType) {
+    
+    enum Indent {
+        case addSpace
+        case reduceSpace
+    }
+    
+    func adaptIndentation(_ adapt: Indent) {
+        switch adapt {
+        case .addSpace:
+            indentSpace = indentSpace + indentString
+            separatorString.removeLast(indentString.count)
+        case .reduceSpace:
+            indentSpace.removeFirst(indentString.count)
+            separatorString.append(String(repeating: separatorCharacter, count: indentString.count))
+        }
+    }
+    
+    func printItemInfo(item: Dictionary<String, Any>) {
+        
+        let currentSwiftItemType = ItemType(rawValue: (String(describing: item["SwiftType"] ?? "")))
+        printWithIndent("Object class TypeID: \(item["ObjectType"] ?? "")", toggle: printflag_objectClassType)
+        printWithIndent("Object class Name: \(item["ObjectClassName"] ?? "")", toggle: printflag_objectClassType)
+        if insideCollectionType == .dictionary {
+            printWithIndent("key: \(item["key"] ?? "")")
+        }
+        if ![.dictionary, .array].contains(currentSwiftItemType) {
+            printWithIndent("value: \(item["value"] ?? "")")
+        }
+        printWithIndent("type: \(currentSwiftItemType?.rawValue ?? "")")
+    }
+            
+    for item in data {
+        var resultDictionary = getItemType(itemValue: item.value)
+        guard let swiftType = resultDictionary["SwiftType"].self else {
+            fatalError("type exception !!!")
+        }
+        let typeName = String(describing: swiftType)
+        let resultKey = item.key
+        let resultValue = item.value
+        resultDictionary["key"] = resultKey
+        resultDictionary["value"] = resultValue
+
+        printWithIndent(separatorString, toggle: printflag_separator)
+
+        switch ItemType(rawValue: typeName) {
+        case .boolean:
+            resultDictionary["value"] = resultValue as! Bool
+            printItemInfo(item: resultDictionary)
+        case .integer:
+            resultDictionary["value"] = resultValue as! Int
+            printItemInfo(item: resultDictionary)
+        case .string:
+            resultDictionary["value"] = resultValue as! String
+            printItemInfo(item: resultDictionary)
+        case .double:
+            resultDictionary["value"] = resultValue as! Double
+            printItemInfo(item: resultDictionary)
+        case .date:
+            resultDictionary["value"] = resultValue as! Date
+            printItemInfo(item: resultDictionary)
+        case .data:
+            resultDictionary["value"] = resultValue as! Data
+            printItemInfo(item: resultDictionary)
+        case .dictionary:
+            resultDictionary["value"] = resultValue as! Dictionary<String, Any>
+            printItemInfo(item: resultDictionary)
+            adaptIndentation(.addSpace)
+            getItemInfo(data: item.value as! [String: Any], insideCollectionType: .dictionary)
+            adaptIndentation(.reduceSpace)
+        case .array:
+            resultDictionary["value"] = resultValue as! Array<Any>
+            printItemInfo(item: resultDictionary)
+            adaptIndentation(.addSpace)
+            for arrayElement in item.value as! [Any] {
+                let resultDictionary = getItemType(itemValue: arrayElement)
+                guard let swiftType = resultDictionary["SwiftType"].self else {
+                    fatalError("type exception !!!")
+                }
+                let swiftTypeName = String(describing: swiftType)
+                let arrayItem = [swiftTypeName: arrayElement]
+                getItemInfo(data: arrayItem, insideCollectionType: .array)
+            }
+            adaptIndentation(.reduceSpace)
+        default:
+            print("Error! type \(typeName) not found")
+        }
+    }
+}
+```
+
+### The code will be prepared for two different build results
 #### 1st – call on command line with Swift source code interpreter, where the swift source file is located in the same folder as the input plist file.
 ###### `swift main.swift <plist-file>`
 ```

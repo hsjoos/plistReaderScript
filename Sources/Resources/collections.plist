@@ -4,19 +4,29 @@
 <dict>
 	<key>ProjectName</key>
 	<string>plistReader.xcodeproj</string>
+	<key>Date</key>
+	<date>2024-04-29T16:11:12Z</date>
+	<key>Data</key>
+	<data></data>
 	<key>Scheme</key>
 	<string>plistBundle</string>
 	<key>ProjectBundleName</key>
 	<string>com.ci.plistreader</string>
 	<key>SingleBooleanValue1</key>
 	<true/>
-    <key>SingleBooleanValue2</key>
-    <false/>
-	<key>StringArraySources</key>
+	<key>SingleBooleanValue2</key>
+	<false/>
+	<key>ArrayArraySources</key>
 	<array>
-		<string>1st string</string>
-		<string>2nd string</string>
-		<string>3rd string</string>
+		<array>
+			<string>s11</string>
+		</array>
+		<array>
+			<string>s12</string>
+		</array>
+		<array>
+			<string>s13</string>
+		</array>
 	</array>
 	<key>IntegerArraySources</key>
 	<array>
@@ -30,39 +40,39 @@
 		<real>12.12</real>
 		<real>13.13</real>
 	</array>
-    <key>BoolArraySources</key>
-    <array>
-        <true/>
-        <false/>
-        <true/>
-    </array>
-    <key>DictionarySources</key>
-    <dict>
-        <key>Dictionary inside a Dictionary</key>
-        <dict>
-            <key>d1</key>
-            <string>string value from d1</string>
-            <key>di1</key>
-            <integer>1</integer>
-            <key>InsideIntegerArraySources</key>
-            <array>
-                <integer>11</integer>
-                <integer>22</integer>
-                <integer>33</integer>
-            </array>
-            <key>InsideStringArraySources</key>
-            <array>
-                <string>item1</string>
-                <string>item2</string>
-                <string>item3</string>
-            </array>
-            <key>BoolArraySources</key>
-            <array>
-                <true/>
-                <false/>
-                <true/>
-            </array>
-        </dict>
-    </dict>
+	<key>BoolArraySources</key>
+	<array>
+		<true/>
+		<false/>
+		<true/>
+	</array>
+	<key>DictionarySources</key>
+	<dict>
+		<key>Dictionary inside a Dictionary</key>
+		<dict>
+			<key>d1</key>
+			<string>string value from d1</string>
+			<key>di1</key>
+			<integer>1</integer>
+			<key>InsideIntegerArraySources</key>
+			<array>
+				<integer>11</integer>
+				<integer>22</integer>
+				<integer>33</integer>
+			</array>
+			<key>InsideStringArraySources</key>
+			<array>
+				<string>item1</string>
+				<string>item2</string>
+				<string>item3</string>
+			</array>
+			<key>BoolArraySources</key>
+			<array>
+				<true/>
+				<false/>
+				<true/>
+			</array>
+		</dict>
+	</dict>
 </dict>
 </plist>
