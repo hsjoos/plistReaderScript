@@ -1,13 +1,12 @@
 {
     "version": "0.2.0",
     "configurations": [
-
         {
             "name": "Debug",
             "type": "lldb",
             "request": "launch",
             "program": "${workspaceFolder}/.build/debug/plistReader",
-            "args": [],
+            "args": ["${workspaceFolder:plistReader}/Sources/Resources/collections.plist"],
             "cwd": "${workspaceFolder}"
         },
         {
@@ -16,7 +15,7 @@
             "sourceLanguages": [
                 "swift"
             ],
-            "args": [],
+            "args": ["${workspaceFolder:plistReader}/Sources/Resources/collections.plist"],
             "cwd": "${workspaceFolder:plistReader}",
             "name": "Debug plistReader",
             "program": "${workspaceFolder:plistReader}/.build/debug/plistReader",
@@ -28,7 +27,7 @@
             "sourceLanguages": [
                 "swift"
             ],
-            "args": [],
+            "args": ["${workspaceFolder:plistReader}/Sources/Resources/collections.plist"],
             "cwd": "${workspaceFolder:plistReader}",
             "name": "Release plistReader",
             "program": "${workspaceFolder:plistReader}/.build/release/plistReader",

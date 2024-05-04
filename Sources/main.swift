@@ -19,15 +19,15 @@ var separatorString = String(repeating: separatorCharacter, count: 45)
 
 let scriptSourceDefaultPath = "./"
 
-let printflag_swiftType = PrintFlag.off
-let printflag_objectClassType = PrintFlag.off
-let printflag_ObjectClassTypeName = PrintFlag.off
-let printflag_separator = PrintFlag.off
+let printflag_swiftType             = PrintFlag.on
+let printflag_objectClassType       = PrintFlag.on
+let printflag_ObjectClassTypeName   = PrintFlag.on
+let printflag_separator             = PrintFlag.on
 
 enum PrintFlag {
     case on
     case off
-    
+
     var isOn: Bool {
         switch self {
         case .on:
@@ -38,7 +38,7 @@ enum PrintFlag {
     }
 }
 
-enum ItemType: String{
+enum ItemType: String {
     case array = "Array<Any>"
     case dictionary = "Dictionary<String, Any>"
     case string = "String"
@@ -60,11 +60,11 @@ func printWithIndent(_ info: String, toggle: PrintFlag = .on) {
 /// Collect  item type from NSObject plist element and return respective Swift type
 /// - Parameter item: dictionary element
 /// - Returns: Swift type
-func getItemType(itemValue: Any) -> Dictionary<String, Any> {
+func getItemType(itemValue: Any) -> [String: Any] {
     var plistElementType: Any
     let valueWithObjectType = itemValue as! NSObject
     let typeID = CFGetTypeID(valueWithObjectType)
-    
+
     switch typeID {
     case CFBooleanGetTypeID():
         plistElementType = Bool.self
@@ -88,31 +88,43 @@ func getItemType(itemValue: Any) -> Dictionary<String, Any> {
     default:
         plistElementType = Any.self
     }
-    return [ "SwiftType": plistElementType.self, "ObjectType": typeID, "ObjectClassName": String(describing: type(of: itemValue)) ]
+    return [
+        "SwiftType": plistElementType.self, "ObjectType": typeID,
+        "ObjectClassName": String(describing: type(of: itemValue)),
+    ]
 }
 
 // MARK: - Read sample property list file and deserialize its elements into a dictionary collection
 
 /// File manager will fetch plist file from compiled commandline tool as well as from swift script
 /// - Parameter name: plist file name
-/// - Returns: plist ad generic dictionary
+/// - Returns: plist as dictionary
 func getPlist(withName name: String) -> [String: Any]? {
     var path: String?
-    var fileName = name
+    let fullPath = name
     let fileType = ".plist"
-    
-    if name.hasSuffix(fileType) {
-        fileName = name.split(separator: ".").dropLast().joined(separator: ".")
+    var fileName = (fullPath as NSString).lastPathComponent
+    let directoryPath = (fullPath as NSString).deletingLastPathComponent
+    if fileName.hasSuffix(fileType) {
+        fileName = fileName.split(separator: ".").dropLast().joined(separator: ".")
     }
-    
-#if SWIFT_PACKAGE
-    if let bundlePath: String = Bundle.module.path(forResource: fileName, ofType: fileType) {
-        path = bundlePath
-    }
-#else
-    path = scriptSourceDefaultPath + "\(fileName)" + fileType
-#endif
-    
+    #if SWIFT_PACKAGE
+        if directoryPath.isEmpty {
+            if let bundlePath: String = Bundle.module.path(
+                forResource: fileName, ofType: fileType)
+            {
+                path = bundlePath
+            }
+        } else {
+            path = directoryPath + "/\(fileName)" + fileType
+        }
+    #else
+        if directoryPath.isEmpty {
+            path = scriptSourceDefaultPath + "\(fileName)" + fileType
+        } else {
+            path = directoryPath + "/\(fileName)" + fileType
+        }
+    #endif
     if let plistData = FileManager.default.contents(atPath: path ?? "") {
         do {
             // Deserialize the property list
@@ -129,12 +141,12 @@ func getPlist(withName name: String) -> [String: Any]? {
 /// Print nested elements and display the hierarchical structure if collections in turn contain collections
 /// - Parameter data:
 func getItemInfo(data: [String: Any], insideCollectionType: ItemType) {
-    
+
     enum Indent {
         case addSpace
         case reduceSpace
     }
-    
+
     func adaptIndentation(_ adapt: Indent) {
         switch adapt {
         case .addSpace:
@@ -142,15 +154,22 @@ func getItemInfo(data: [String: Any], insideCollectionType: ItemType) {
             separatorString.removeLast(indentString.count)
         case .reduceSpace:
             indentSpace.removeFirst(indentString.count)
-            separatorString.append(String(repeating: separatorCharacter, count: indentString.count))
+            separatorString.append(
+                String(repeating: separatorCharacter, count: indentString.count))
         }
     }
-    
-    func printItemInfo(item: Dictionary<String, Any>) {
-        
-        let currentSwiftItemType = ItemType(rawValue: (String(describing: item["SwiftType"] ?? "")))
-        printWithIndent("Object class TypeID: \(item["ObjectType"] ?? "")", toggle: printflag_objectClassType)
-        printWithIndent("Object class Name: \(item["ObjectClassName"] ?? "")", toggle: printflag_objectClassType)
+
+    func printItemInfo(item: [String: Any]) {
+
+        let currentSwiftItemType = ItemType(
+            rawValue: (String(describing: item["SwiftType"] ?? "")))
+        printWithIndent(
+            "Object class TypeID: \(item["ObjectType"] ?? "")",
+            toggle: printflag_objectClassType)
+        printWithIndent(
+            "Object class Name: \(item["ObjectClassName"] ?? "")",
+            toggle: printflag_objectClassType
+        )
         if insideCollectionType == .dictionary {
             printWithIndent("key: \(item["key"] ?? "")")
         }
@@ -159,7 +178,7 @@ func getItemInfo(data: [String: Any], insideCollectionType: ItemType) {
         }
         printWithIndent("type: \(currentSwiftItemType?.rawValue ?? "")")
     }
-            
+
     for item in data {
         var resultDictionary = getItemType(itemValue: item.value)
         guard let swiftType = resultDictionary["SwiftType"].self else {
@@ -193,13 +212,15 @@ func getItemInfo(data: [String: Any], insideCollectionType: ItemType) {
             resultDictionary["value"] = resultValue as! Data
             printItemInfo(item: resultDictionary)
         case .dictionary:
-            resultDictionary["value"] = resultValue as! Dictionary<String, Any>
+            resultDictionary["value"] = resultValue as! [String: Any]
             printItemInfo(item: resultDictionary)
             adaptIndentation(.addSpace)
-            getItemInfo(data: item.value as! [String: Any], insideCollectionType: .dictionary)
+            getItemInfo(
+                data: item.value as! [String: Any],
+                insideCollectionType: .dictionary)
             adaptIndentation(.reduceSpace)
         case .array:
-            resultDictionary["value"] = resultValue as! Array<Any>
+            resultDictionary["value"] = resultValue as! [Any]
             printItemInfo(item: resultDictionary)
             adaptIndentation(.addSpace)
             for arrayElement in item.value as! [Any] {
