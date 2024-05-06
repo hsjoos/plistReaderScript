@@ -168,7 +168,7 @@ func getItemInfo(data: [String: Any], insideCollectionType: ItemType) {
             toggle: printflag_objectClassType)
         printWithIndent(
             "Object class Name: \(item["ObjectClassName"] ?? "")",
-            toggle: printflag_objectClassType
+            toggle: printflag_ObjectClassTypeName
         )
         if insideCollectionType == .dictionary {
             printWithIndent("key: \(item["key"] ?? "")")
@@ -176,7 +176,7 @@ func getItemInfo(data: [String: Any], insideCollectionType: ItemType) {
         if ![.dictionary, .array].contains(currentSwiftItemType) {
             printWithIndent("value: \(item["value"] ?? "")")
         }
-        printWithIndent("type: \(currentSwiftItemType?.rawValue ?? "")")
+        printWithIndent("Swift Type: \(currentSwiftItemType?.rawValue ?? "")", toggle: printflag_swiftType)
     }
 
     for item in data {

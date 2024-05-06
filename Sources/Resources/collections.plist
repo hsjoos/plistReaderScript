@@ -3,15 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>ProjectName</key>
-	<string>plistReader.xcodeproj</string>
+	<string>plistReader</string>
 	<key>Date</key>
 	<date>2024-04-29T16:11:12Z</date>
 	<key>Data</key>
-	<data></data>
-	<key>Scheme</key>
-	<string>plistBundle</string>
-	<key>ProjectBundleName</key>
-	<string>com.ci.plistreader</string>
+	<data>SGVsbG8=</data>
 	<key>SingleBooleanValue1</key>
 	<true/>
 	<key>SingleBooleanValue2</key>
@@ -24,27 +20,6 @@
 		<array>
 			<string>s12</string>
 		</array>
-		<array>
-			<string>s13</string>
-		</array>
-	</array>
-	<key>IntegerArraySources</key>
-	<array>
-		<integer>11</integer>
-		<integer>12</integer>
-		<integer>13</integer>
-	</array>
-	<key>DoubleArraySources</key>
-	<array>
-		<real>11.11</real>
-		<real>12.12</real>
-		<real>13.13</real>
-	</array>
-	<key>BoolArraySources</key>
-	<array>
-		<true/>
-		<false/>
-		<true/>
 	</array>
 	<key>DictionarySources</key>
 	<dict>
@@ -58,21 +33,18 @@
 			<array>
 				<integer>11</integer>
 				<integer>22</integer>
-				<integer>33</integer>
 			</array>
 			<key>InsideStringArraySources</key>
 			<array>
 				<string>item1</string>
 				<string>item2</string>
-				<string>item3</string>
-			</array>
-			<key>BoolArraySources</key>
-			<array>
-				<true/>
-				<false/>
-				<true/>
 			</array>
 		</dict>
+		<key>BoolArraySources</key>
+		<array>
+			<true/>
+			<false/>
+		</array>
 	</dict>
 </dict>
 </plist>
